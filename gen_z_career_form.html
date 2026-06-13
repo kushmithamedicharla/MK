@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gen Z Career Aspirations — KultureHire Milestone 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  /* ── Token System ─────────────────────────────────────── */
+  :root {
+    --ink:       #0d0f1a;
+    --surface:   #f5f4f0;
+    --card:      #ffffff;
+    --accent:    #5b3bff;
+    --accent-lt: #ede9ff;
+    --tag-gen:   #d4f0e0;
+    --tag-emp:   #fde8d0;
+    --tag-gen-t: #1a6640;
+    --tag-emp-t: #7a3b10;
+    --mid:       #6b6f7f;
+    --border:    #e0deda;
+    --radius:    14px;
+    --radius-sm: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── Stripe header ────────────────────────────────────── */
+  .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 56px 32px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 320px; height: 320px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: .18;
+  }
+  .hero-label {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    max-width: 640px;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 15px;
+    color: #b0b4c4;
+    max-width: 520px;
+    line-height: 1.6;
+  }
+
+  /* ── Framework nav ────────────────────────────────────── */
+  .framework-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 20px 32px;
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .fw-pill {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1.5px solid rgba(255,255,255,.2);
+    color: rgba(255,255,255,.55);
+    background: transparent;
+    transition: all .2s;
+  }
+  .fw-pill.active, .fw-pill:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* ── Main layout ──────────────────────────────────────── */
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* ── Section headers ──────────────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 44px 0 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-code {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    min-width: 44px;
+  }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; }
+  .section-sub   { font-size: 13px; color: var(--mid); margin-top: 2px; }
+
+  /* ── Perspective tags ─────────────────────────────────── */
+  .pov {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 12px;
+    margin-bottom: 6px;
+    letter-spacing: .04em;
+  }
+  .pov.gen  { background: var(--tag-gen);  color: var(--tag-gen-t); }
+  .pov.emp  { background: var(--tag-emp);  color: var(--tag-emp-t); }
+
+  /* ── Cards ────────────────────────────────────────────── */
+  .card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-bottom: 16px;
+    transition: box-shadow .2s;
+  }
+  .card:focus-within { box-shadow: 0 0 0 3px var(--accent-lt); border-color: var(--accent); }
+
+  label.ql {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  label.ql .req { color: var(--accent); margin-left: 2px; }
+
+  /* ── Input types ──────────────────────────────────────── */
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  textarea,
+  select {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); background: #fff; }
+  textarea { resize: vertical; min-height: 90px; }
+
+  /* Radio / Checkbox grid */
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    font-size: 14px;
+  }
+  .opt:hover { border-color: var(--accent); background: var(--accent-lt); }
+  .opt input[type="radio"],
+  .opt input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+
+  /* Scale row */
+  .scale-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 6px;
+  }
+  .scale-label { font-size: 12px; color: var(--mid); white-space: nowrap; }
+  .scale-dots {
+    display: flex;
+    flex: 1;
+    justify-content: space-evenly;
+    margin: 0 10px;
+    gap: 4px;
+  }
+  .scale-dot label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    color: var(--mid);
+  }
+  .scale-dot input { accent-color: var(--accent); cursor: pointer; }
+
+  /* Two‑perspective split */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .split { grid-template-columns: 1fr; } }
+  .split-box {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .split-box .pov { margin-bottom: 10px; }
+
+  /* ── Submit button ────────────────────────────────────── */
+  .submit-area { text-align: center; margin-top: 48px; }
+  .btn-submit {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    padding: 16px 48px;
+    cursor: pointer;
+    letter-spacing: .04em;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(91,59,255,.3); }
+  .btn-submit:active { transform: none; }
+
+  .note { font-size: 13px; color: var(--mid); margin-top: 10px; }
+
+  /* ── Progress bar ─────────────────────────────────────── */
+  .progress-bar-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .progress-bar-bg { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; width: 0%; transition: width .4s; }
+  .progress-text { font-size: 12px; color: var(--mid); white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-label">KultureHire · Milestone 3</div>
+  <h1>Why is Gen Z <span>Dissatisfied</span><br>at Work?</h1>
+  <p>A 5W1H problem statement survey exploring the career aspirations gap between Gen Z employees and employers. Both perspectives matter — answer honestly.</p>
+</header>
+
+<!-- Framework navigation pills -->
+<nav class="framework-nav" aria-label="5W1H Sections">
+  <button class="fw-pill active">WHAT</button>
+  <button class="fw-pill">WHY</button>
+  <button class="fw-pill">WHO</button>
+  <button class="fw-pill">WHEN</button>
+  <button class="fw-pill">WHERE</button>
+  <button class="fw-pill">HOW</button>
+</nav>
+
+<!-- Sticky progress bar -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">0 / 18 answered</div>
+</div>
+
+<!-- Form body -->
+<div class="container">
+  <form id="surveyForm" novalidate>
+
+    <!-- ── SECTION 1 · ABOUT YOU ─────────────────────────── -->
+    <div class="section-header">
+      <div class="section-code">01</div>
+      <div>
+        <div class="section-title">About You</div>
+        <div class="section-sub">Basic profile — helps us segment responses</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">Are you a member of Generation Z (born 1997 – 2012)? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="is_genz" value="yes" required> Yes, I am Gen Z</label>
+        <label class="opt"><input type="radio" name="is_genz" value="no"> No, I am an employer / recruiter</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">Your gender</label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="gender" value="male"> Male</label>
+        <label class="opt"><input type="radio" name="gender" value="female"> Female</label>
+        <label class="opt"><input type="radio" name="gender" value="prefer_not"> Prefer not to say</label>
+        <label class="opt"><input type="radio" name="gender" value="other"> Other</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">Your age group <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="age" value="18-21" required> 18 – 21 years</label>
+        <label class="opt"><input type="radio" name="age" value="22-25"> 22 – 25 years</label>
+        <label class="opt"><input type="radio" name="age" value="26-29"> 26 – 29 years</label>
+        <label class="opt"><input type="radio" name="age" value="not_genz"> Not Gen Z (30+)</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql" for="location">Where are you currently residing? <span class="req">*</span></label>
+      <input type="text" id="location" name="location" placeholder="City, State / Country" required />
+    </div>
+
+    <div class="card">
+      <label class="ql" for="education">Highest level of education <span class="req">*</span></label>
+      <select id="education" name="education" required>
+        <option value="" disabled selected>Select your level</option>
+        <option>High School / 10+2</option>
+        <option>Undergraduate (pursuing)</option>
+        <option>Bachelor's Degree</option>
+        <option>Postgraduate (pursuing)</option>
+        <option>Master's Degree</option>
+        <option>Doctorate / PhD</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <label class="ql">Current employment status</label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="status" value="student"> Student</label>
+        <label class="opt"><input type="radio" name="status" value="unemployed"> Unemployed</label>
+        <label class="opt"><input type="radio" name="status" value="part_time"> Part-time employed</label>
+        <label class="opt"><input type="radio" name="status" value="full_time"> Full-time employed</label>
+        <label class="opt"><input type="radio" name="status" value="freelance"> Freelancing / Self-employed</label>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2 · WHAT ──────────────────────────────── -->
+    <div class="section-header" id="sec-what">
+      <div class="section-code">W1</div>
+      <div>
+        <div class="section-title">WHAT — The Problem</div>
+        <div class="section-sub">What are Gen Z's career expectations and where do they clash with employer reality?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="pov gen">🟢 Gen Z perspective</span>
+      <label class="ql">Which of these best describes what you feel is missing in most jobs? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="checkbox" name="missing" value="purpose"> Sense of purpose — the work feels meaningless</label>
+        <label class="opt"><input type="checkbox" name="missing" value="growth"> Clear growth path — no promotions or skill building</label>
+        <label class="opt"><input type="checkbox" name="missing" value="flexibility"> Flexibility — rigid hours or no remote option</label>
+        <label class="opt"><input type="checkbox" name="missing" value="salary"> Fair salary — pay doesn't match effort or market</label>
+        <label class="opt"><input type="checkbox" name="missing" value="culture"> Positive culture — toxic or unsupportive environment</label>
+        <label class="opt"><input type="checkbox" name="missing" value="recognition"> Recognition — my contributions go unnoticed</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="pov emp">🟠 Employer perspective</span>
+      <label class="ql">As an employer / manager, what do you observe as Gen Z's biggest challenge? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="checkbox" name="emp_challenge" value="loyalty"> Low loyalty — frequent job-hopping</label>
+        <label class="opt"><input type="checkbox" name="emp_challenge" value="unrealistic"> Unrealistic salary expectations</label>
+        <label class="opt"><input type="checkbox" name="emp_challenge" value="feedback"> Over-reliance on constant feedback</label>
+        <label class="opt"><input type="checkbox" name="emp_challenge" value="remote_demand"> Excessive demand for remote / flexible work</label>
+        <label class="opt"><input type="checkbox" name="emp_challenge" value="communication"> Communication and professionalism gaps</label>
+        <label class="opt"><input type="checkbox" name="emp_challenge" value="patience"> Lack of patience for long-term career building</label>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3 · WHY ───────────────────────────────── -->
+    <div class="section-header" id="sec-why">
+      <div class="section-code">W2</div>
+      <div>
+        <div class="section-title">WHY — Root Causes</div>
+        <div class="section-sub">Why does this mismatch exist between what Gen Z wants and what employers offer?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="pov gen">🟢 Gen Z perspective</span>
+      <label class="ql">Why do you feel dissatisfied or confused about your career path? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="genz_why" value="purpose_gap" required> My job doesn't align with my values or purpose</label>
+        <label class="opt"><input type="radio" name="genz_why" value="pay_gap"> I am underpaid relative to market standards</label>
+        <label class="opt"><input type="radio" name="genz_why" value="no_growth"> There's no visible path for growth or promotion</label>
+        <label class="opt"><input type="radio" name="genz_why" value="culture_gap"> The workplace culture feels outdated or toxic</label>
+        <label class="opt"><input type="radio" name="genz_why" value="no_balance"> Work-life balance is poor / burnout is real</label>
+        <label class="opt"><input type="radio" name="genz_why" value="no_autonomy"> I have no autonomy or creative freedom</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="pov emp">🟠 Employer perspective</span>
+      <label class="ql">Why do you think Gen Z changes jobs frequently? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="emp_why" value="social_media" required> Social media creates unrealistic career expectations</label>
+        <label class="opt"><input type="radio" name="emp_why" value="pandemic"> COVID-19 shaped a different attitude toward work</label>
+        <label class="opt"><input type="radio" name="emp_why" value="entitled"> Sense of entitlement without putting in the time</label>
+        <label class="opt"><input type="radio" name="emp_why" value="options"> More options available — gig economy, freelance, startups</label>
+        <label class="opt"><input type="radio" name="emp_why" value="values_shift"> A genuine generational shift in values</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql" for="personal_why">In your own words — share a personal example of a career moment that felt frustrating or inspiring. <span class="req">*</span></label>
+      <textarea id="personal_why" name="personal_why" placeholder="E.g. 'I left my first job after 6 months because there was no learning opportunity…'" required></textarea>
+    </div>
+
+    <!-- ── SECTION 4 · WHO ───────────────────────────────── -->
+    <div class="section-header" id="sec-who">
+      <div class="section-code">W3</div>
+      <div>
+        <div class="section-title">WHO — Affected Parties</div>
+        <div class="section-sub">Who is most impacted by the career expectations gap?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">Which Gen Z group do you think is most affected by career dissatisfaction? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="who_affected" value="fresh" required> Fresh graduates (0–2 years experience)</label>
+        <label class="opt"><input type="radio" name="who_affected" value="mid"> Mid-level workers (3–5 years)</label>
+        <label class="opt"><input type="radio" name="who_affected" value="tier2"> Those from smaller cities / tier-2 towns</label>
+        <label class="opt"><input type="radio" name="who_affected" value="female_genz"> Young women navigating workplace bias</label>
+        <label class="opt"><input type="radio" name="who_affected" value="all"> All of the above equally</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">Which industry do you want to work in (or currently work in)? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="industry" value="tech" required> Technology / IT</label>
+        <label class="opt"><input type="radio" name="industry" value="finance"> Business / Finance</label>
+        <label class="opt"><input type="radio" name="industry" value="creative"> Creative / Media</label>
+        <label class="opt"><input type="radio" name="industry" value="healthcare"> Healthcare</label>
+        <label class="opt"><input type="radio" name="industry" value="education"> Education</label>
+        <label class="opt"><input type="radio" name="industry" value="other_ind"> Other</label>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5 · WHEN ──────────────────────────────── -->
+    <div class="section-header" id="sec-when">
+      <div class="section-code">W4</div>
+      <div>
+        <div class="section-title">WHEN — Timeline & Urgency</div>
+        <div class="section-sub">At what point in a career does dissatisfaction peak?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">When do you typically start feeling dissatisfied in a job? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="when_dissatisfied" value="3m" required> Within the first 3 months</label>
+        <label class="opt"><input type="radio" name="when_dissatisfied" value="6m"> 3 – 6 months in</label>
+        <label class="opt"><input type="radio" name="when_dissatisfied" value="1y"> 6 months – 1 year</label>
+        <label class="opt"><input type="radio" name="when_dissatisfied" value="2y"> 1 – 2 years in</label>
+        <label class="opt"><input type="radio" name="when_dissatisfied" value="never"> I haven't felt dissatisfied yet</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">What is your expected time frame to reach your ultimate career goal? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="goal_timeline" value="1y" required> Within 1 year</label>
+        <label class="opt"><input type="radio" name="goal_timeline" value="1-3y"> 1 – 3 years</label>
+        <label class="opt"><input type="radio" name="goal_timeline" value="3-5y"> 3 – 5 years</label>
+        <label class="opt"><input type="radio" name="goal_timeline" value="5-10y"> 5 – 10 years</label>
+        <label class="opt"><input type="radio" name="goal_timeline" value="10y+"> More than 10 years</label>
+        <label class="opt"><input type="radio" name="goal_timeline" value="unsure"> I'm unsure right now</label>
+      </div>
+    </div>
+
+    <!-- ── SECTION 6 · WHERE ─────────────────────────────── -->
+    <div class="section-header" id="sec-where">
+      <div class="section-code">W5</div>
+      <div>
+        <div class="section-title">WHERE — Environment & Context</div>
+        <div class="section-sub">Where do Gen Z workers thrive and where do they struggle?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">Which work environment do you prefer? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="work_env" value="remote" required> Remote — fully from home</label>
+        <label class="opt"><input type="radio" name="work_env" value="hybrid"> Hybrid — mix of office and remote</label>
+        <label class="opt"><input type="radio" name="work_env" value="inoffice"> In-office — I like the physical workplace</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">What type of company excites you most? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="company_type" value="corp" required> A large corporation with global reach</label>
+        <label class="opt"><input type="radio" name="company_type" value="startup"> A dynamic startup with innovation at its core</label>
+        <label class="opt"><input type="radio" name="company_type" value="sme"> A small business where you can make a big impact</label>
+        <label class="opt"><input type="radio" name="company_type" value="open"> Open to any — depends on the opportunity</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">Are you open to relocating for the right job? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="radio" name="relocate" value="anywhere" required> Yes — willing to relocate anywhere</label>
+        <label class="opt"><input type="radio" name="relocate" value="country"> Yes — but only within my country</label>
+        <label class="opt"><input type="radio" name="relocate" value="region"> Yes — only within my current region / state</label>
+        <label class="opt"><input type="radio" name="relocate" value="no"> No — not open to relocating</label>
+        <label class="opt"><input type="radio" name="relocate" value="unsure"> Unsure at the moment</label>
+      </div>
+    </div>
+
+    <!-- ── SECTION 7 · HOW ───────────────────────────────── -->
+    <div class="section-header" id="sec-how">
+      <div class="section-code">H1</div>
+      <div>
+        <div class="section-title">HOW — Solutions & Motivations</div>
+        <div class="section-sub">How can employers bridge the gap? How does Gen Z plan to grow?</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">On a scale of 1–10, how important is work-life balance in your career decisions? <span class="req">*</span></label>
+      <div class="scale-row">
+        <span class="scale-label">Not important</span>
+        <div class="scale-dots">
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="1" required>1</label></div>
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="2">2</label></div>
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="3">3</label></div>
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="4">4</label></div>
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="5">5</label></div>
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="6">6</label></div>
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="7">7</label></div>
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="8">8</label></div>
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="9">9</label></div>
+          <div class="scale-dot"><label><input type="radio" name="wlb" value="10">10</label></div>
+        </div>
+        <span class="scale-label">Critical</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">What motivates you most in your career? (select all that apply) <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="checkbox" name="motivator" value="milestones"> Achieving career milestones and goals</label>
+        <label class="opt"><input type="checkbox" name="motivator" value="recognition"> Receiving recognition and praise for my work</label>
+        <label class="opt"><input type="checkbox" name="motivator" value="learning"> Opportunities for learning and personal growth</label>
+        <label class="opt"><input type="checkbox" name="motivator" value="impact"> Making a meaningful social impact</label>
+        <label class="opt"><input type="checkbox" name="motivator" value="financial"> Financial rewards and career advancement</label>
+        <label class="opt"><input type="checkbox" name="motivator" value="community"> A positive and supportive work community</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql">How do you prefer to advance in your career? <span class="req">*</span></label>
+      <div class="options">
+        <label class="opt"><input type="checkbox" name="advance" value="promotions"> Climbing the ladder through internal promotions</label>
+        <label class="opt"><input type="checkbox" name="advance" value="skills"> Gaining new skills and expertise constantly</label>
+        <label class="opt"><input type="checkbox" name="advance" value="switch"> Switching companies for better opportunities</label>
+        <label class="opt"><input type="checkbox" name="advance" value="combo"> A combination of these approaches</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="ql" for="success_def">How do you personally define career success? <span class="req">*</span></label>
+      <textarea id="success_def" name="success_def" placeholder="E.g. 'Success to me means having the freedom to do work I love while earning enough to live comfortably…'" required></textarea>
+    </div>
+
+    <div class="card">
+      <label class="ql" for="solution">What is ONE thing employers could do right now to better retain Gen Z talent? <span class="req">*</span></label>
+      <textarea id="solution" name="solution" placeholder="Your honest suggestion here…" required></textarea>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-area">
+      <button type="submit" class="btn-submit">Submit My Responses →</button>
+      <p class="note">Your response helps build a clearer picture of Gen Z's career aspirations.</p>
+    </div>
+
+  </form>
+</div>
+
+<!-- ── Confirmation overlay ─────────────────────────────── -->
+<div id="confirmation" style="display:none; position:fixed; inset:0; background:rgba(13,15,26,.85); z-index:100; display:none; align-items:center; justify-content:center;">
+  <div style="background:#fff; border-radius:20px; padding:48px 40px; max-width:440px; text-align:center;">
+    <div style="font-size:48px; margin-bottom:16px;">🎉</div>
+    <h2 style="font-family:'Syne',sans-serif; font-size:22px; font-weight:800; margin-bottom:12px;">Response Submitted!</h2>
+    <p style="color:#6b6f7f; font-size:14px; line-height:1.6;">Thank you for sharing your perspective. Your insights will help KultureHire better understand Gen Z career aspirations and build the problem statement for Milestone 3.</p>
+    <button onclick="document.getElementById('confirmation').style.display='none'" style="margin-top:24px; background:#5b3bff; color:#fff; border:none; border-radius:30px; padding:12px 32px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer;">Close</button>
+  </div>
+</div>
+
+<script>
+  // ── Progress tracking ──────────────────────────────────
+  const form = document.getElementById('surveyForm');
+  const fillEl = document.getElementById('progressFill');
+  const textEl = document.getElementById('progressText');
+  const TOTAL = 18;
+
+  function countAnswered() {
+    const names = new Set();
+    form.querySelectorAll('input:checked, textarea, select').forEach(el => {
+      if (el.tagName === 'TEXTAREA' && el.value.trim()) names.add(el.name);
+      if (el.tagName === 'SELECT' && el.value) names.add(el.name);
+      if ((el.type === 'radio' || el.type === 'checkbox') && el.checked) names.add(el.name);
+    });
+    return names.size;
+  }
+
+  function updateProgress() {
+    const n = Math.min(countAnswered(), TOTAL);
+    const pct = Math.round(n / TOTAL * 100);
+    fillEl.style.width = pct + '%';
+    textEl.textContent = n + ' / ' + TOTAL + ' answered';
+  }
+
+  form.addEventListener('change', updateProgress);
+  form.addEventListener('input', updateProgress);
+
+  // ── Framework pill nav ─────────────────────────────────
+  const sections = { WHAT:'sec-what', WHY:'sec-why', WHO:'sec-who', WHEN:'sec-when', WHERE:'sec-where', HOW:'sec-how' };
+  document.querySelectorAll('.fw-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.fw-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const key = btn.textContent.trim();
+      const id = sections[key];
+      if (id) document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+  });
+
+  // ── Form submit ────────────────────────────────────────
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const conf = document.getElementById('confirmation');
+    conf.style.display = 'flex';
+    updateProgress();
+  });
+</script>
+</body>
+</html>

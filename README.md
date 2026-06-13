@@ -42,7 +42,7 @@ Every major section captures **both sides**:
 
 ## 🌐 Live Demo
 
-[View the form here](https://kushmithamedicharla.github.io/gen-z-career-aspirations-survey/gen_z_career_form.html)
+[View the form here](https://kushmithamedicharla.github.io/MK/gen_z_career_form.html)
 
 
 

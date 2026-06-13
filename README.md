@@ -40,5 +40,9 @@ Every major section captures **both sides**:
 2. Open `gen_z_career_form.html` in any browser
 3. Share the GitHub Pages link to collect responses
 
+## 🌐 Live Demo
+
+[View the form here](https://kushmithamedicharla.github.io/gen-z-career-aspirations-survey/gen_z_career_form.html)
+
 
 
